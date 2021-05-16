@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>{% block title %}{% endblock %} - Team83</title>
+    <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
+    <meta charset="utf-8" />
+    <link rel="icon" href="/static/img/icon.ico" type="image/x-icon" />
+
+    <!-- Fonts and icons -->
+    <script src="/static/js/plugin/webfont/webfont.min.js"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="/static/js/selection.js"></script>
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/css/atlantis.min.css">
+    <link rel="stylesheet" href="/static/css/Team83.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-156011052-1"></script>
+
+
+</head>
+
+<body data-background-color="dark">
+    <div class="wrapper">
+        <div class="main-header">
+            <!-- Logo Header -->
+            <div class="logo-header" data-background-color="dark2">
+                <a href="/" class="logo">
+                    <!-- <img src="/static/img/logo.svg" alt="navbar brand" class="navbar-brand"> -->
+                    <span class="text-white">Team83</span>
+                </a>
+                <button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse" data-target="collapse" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon">
+						<i class="icon-menu"></i>
+					</span>
+				</button>
+                <button class="topbar-toggler more"><i class="icon-options-vertical"></i></button>
+                <div class="nav-toggle">
+                    <button class="btn btn-toggle toggle-sidebar">
+						<i class="icon-menu"></i>
+					</button>
+                </div>
+            </div>
+            <!-- End Logo Header -->
+
+            <!-- Navbar Header -->
+            <nav class="navbar navbar-header navbar-expand-lg" data-background-color="dark">
+                <div class="container-fluid">
+                    <!-- <div class="collapse" id="search-nav">
+						<form class="navbar-left navbar-form nav-search mr-md-3">
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<button type="submit" class="btn btn-search pr-1">
+										<i class="fa fa-search search-icon"></i>
+									</button>
+								</div>
+								<input type="text" placeholder="Search ..." class="form-control">
+							</div>
+						</form>
+					</div> -->
+                </div>
+            </nav>
+            <!-- End Navbar -->
+        </div>
+
+        <!-- Sidebar -->
+        <div class="sidebar sidebar-style-2" data-background-color="dark2">
+            <div class="sidebar-wrapper scrollbar scrollbar-inner">
+                <div class="sidebar-content">
+                    <ul class="nav nav-primary">
+                        <li class="nav-item">
+                            <a href="/about">
+                                <i class="fa fa-list"></i><span class="sub-item">About</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/help">
+                                <i class="fa fa-book"></i><span class="sub-item">Help</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/rate">
+                                <i class="fa fa-book"></i><span class="sub-item">Rate Us!</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- End Sidebar -->
+
+        <div class="main-panel">
+            <div class="container">
+                <div class="page-inner">
+                    {% block content %}{% endblock %}
+                </div>
+            </div>
+            <footer class="footer">
+                <div class="container-fluid">
+                    <nav class="pull-left">
+                        <ul class="nav">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/about">
+									About
+								</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/help">
+									Help
+								</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <!--   Core JS Files   -->
+    <script src="/static/js/core/jquery.3.2.1.min.js"></script>
+    <script src="/static/js/core/popper.min.js"></script>
+    <script src="/static/js/core/bootstrap.min.js"></script>
+
+    <!-- Plugin JS Files -->
+    <script src="/static/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+    <script src="/static/js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"></script>
+    <script src="/static/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+    <script src="/static/js/plugin/bootstrap-tagsinput/bootstrap-tagsinput.min.js"></script>
+    <script src="/static/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+
+    <!-- Atlantis JS -->
+    <script src="/static/js/atlantis.min.js"></script>
+
+</body>
+
+</html>

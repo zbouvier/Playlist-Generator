@@ -1,0 +1,287 @@
+<script src = "https://d3js.org/d3.v5.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
+<style>
+
+    path.link {
+      fill: none;
+      stroke: #666;
+      stroke-width: 1.5px;
+    }
+    
+    .circle {
+      fill: #ccc;
+      stroke: #fff;
+      stroke: black;
+      stroke-width: 1.5px;
+    }
+    
+    .text {
+      fill: #000;
+      font: 9px sans-serif;
+      text-shadow: -1px 1px 2px #000,
+				  1px 1px 2px #000,
+				  1px -1px 0 #000,
+				  -1px -1px 0 #000;
+      pointer-events: none;
+    }
+    .d3-tip {
+        line-height: 1.25;
+        padding: 6px;
+        background: rgb(65, 65, 65);
+        color: #fff;
+        border-radius: 4px;
+        font-size: 12px;
+      }
+    /* Set additional styling options for the columns*/
+    .column1 {
+    float: left;
+    width: 30%;
+    }
+    .column2 {
+        float: left;
+        width: 70%;
+    }
+
+    .row:after {
+    content: "";
+    display: table;
+    clear: both;
+    }
+</style>
+{% extends "base.html" %} {% block title %}home{% endblock %} {% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header text-white font-weight-bold">Debut Release!</div>
+            <div class = card-body>
+                
+                <form method="GET">
+                    <!-- 
+                  <label for="genre">Choose a Genre:</label>
+                  <select name=genres method="GET" action="/">
+                      <option selected disabled>Genre</option>
+                      {% for genre in genres %}
+                      <option value="{{genre}}">{{ genre }}</option>
+                      "
+                      {% endfor %}
+                  </select>
+                  <label for="mood">Choose a Mood:</label>
+                  <select name=moods method="GET" action="/">
+                      <option selected disabled>Mood</option>
+                      {% for mood in moods %}
+                      <option value="{{mood}}">{{ mood }}</option>
+                      "
+                      {% endfor %}
+                  </select>
+                  <input type="submit" name="submit_button" value="Go!" action='/'>
+                      -->
+              <a id="top"></a>
+              <div id="mycircle" class="mycircle">
+                  <script>
+                      selection_screen()
+                  
+                  </script>
+
+              </div>
+
+              </form> 
+                <!-- <div>
+                <div class="column">Hi</div>
+                <div class="column">
+                    <svg id="svg"></svg>
+                </div> -->
+                <a href ="#top">Jump to top of page</a>
+                <a name="scroll"></a>
+                <div class="row card-body">
+                    <div class="column1" >
+                        <!-- <h2>{{tracks}}</h2> -->
+                        {% for para in tracks %}
+                            {{para}} <br/>
+                        {% endfor %}
+                    </div>
+                    <div class="column2" >
+                        <svg id="svg" width="100%" height="100%"></svg>
+                    </div>
+                </div>
+                </div>
+                <script type="text/javascript">
+                var raw_data = {{ data | safe }};
+                var raw_features = {{ features | safe}};
+                var features = {};
+                //console.log(raw_features)
+                for (var i = 0; i < raw_features.length; i++) {
+                    var track_id = raw_features[i][1];
+                    //console.log(track_id);
+                    features[track_id] = raw_features[i];
+                    
+                }
+                var node_degrees = {};
+                //console.log(features);
+                var max_range = 0;
+                data = new Array(raw_data.length);
+                for (var i = 0; i < raw_data.length; i++) {
+                    if (+raw_data[i][2] > max_range) {
+                        max_range = +raw_data[i][2];
+                    }
+                    if (raw_data[i][0] in node_degrees) {
+                        node_degrees[raw_data[i][0]] += 1;
+                    } else {
+                         node_degrees[raw_data[i][0]] = 1;
+                    }
+                    if (raw_data[i][1] in node_degrees) {
+                        node_degrees[raw_data[i][1]] += 1;
+                    } else {
+                        node_degrees[raw_data[i][1]] = 1;
+                    }
+                    data[i] = { source: raw_data[i][0], target: raw_data[i][1], value: +raw_data[i][2]};
+                }
+                //console.log(data)
+                var links = data;
+
+                var nodes = {};
+
+                // compute the distinct nodes from the links.
+                links.forEach(function(link) {
+                    link.source = nodes[link.source] || (nodes[link.source] = {name: link.source});
+                    link.target = nodes[link.target] || (nodes[link.target] = {name: link.target});
+                });
+
+                var width = 1000,
+                    height = 700;
+                var tip = d3.tip().attr('class', 'd3-tip');
+                var color = d3.scaleQuantile().range(["#feedde", "#fdbe85", "#fd8d3c", "#d94701"]);
+                var color_nodes = d3.scaleQuantile().range(["#fafa6e", "#e1f470", "#c9ee73", "#b2e777", "#9cdf7c", "#86d780", "#72cf85", "#5ec688", "#4abd8c"]);
+                color.domain([0, max_range]);
+                color_nodes.domain([0, d3.max(d3.values(node_degrees))]);
+                tip.html(function(d) {
+                    // console.log(d)
+                    var track_features = features[d.name]
+                    var track_name = track_features[0];
+                    var danceability = track_features[2] * 100;
+                    var energy = track_features[3] * 100;
+                    //var key = track_features[4];
+                    var loudness = track_features[5];
+                    //var mode = track_features[6];
+                    var speechiness = track_features[7]* 100;
+                    var acousticness = track_features[8]* 100;
+                    //var instrumentalness = track_features[9];
+                    var liveness = track_features[10]* 100;
+                    //var valence = track_features[11];
+                    var tempo = track_features[12];
+                    return "<strong>Name:</strong> " + track_name + "<br/>" +
+                           "<strong>danceability:</strong> " + danceability.toFixed(2) + "%<br/>" +
+                           "<strong>energy:</strong> " + energy.toFixed(2) + "%<br/>" +
+                           "<strong>loudness:</strong> " + loudness.toFixed(2) + "<br/>" +
+                           "<strong>acousticness:</strong> " + acousticness.toFixed(2) + "%<br/>" +
+                           "<strong>liveness:</strong> " + liveness.toFixed(2) + "%<br/>" +
+                           "<strong>tempo:</strong> " + tempo.toFixed(2) + "<br/>" +
+                           "<strong>speechiness</strong> " + speechiness.toFixed(2) + "%";
+                });
+                var force = d3.forceSimulation()
+                    .nodes(d3.values(nodes))
+                    .force("link", d3.forceLink(links).distance(50).strength(1))
+                    .force('center', d3.forceCenter(width / 2, height / 2))
+                    .force("x", d3.forceX(width / 2).strength(.05))
+                    .force("y", d3.forceY(height / 2).strength(.05))
+                    .velocityDecay(0.1)
+                    .force("charge", d3.forceManyBody().strength(-250))
+                    .on("tick", tick);
+
+                var svg = d3.select("#svg");
+                svg.call(tip);
+                // add the links
+                var path = svg.append("g")
+                    .selectAll("path")
+                    .data(links)
+                    .enter()
+                    .append("path")
+                    .attr("class", function(d) { return "link " + d.type; })
+                    .style("stroke", function(d) {return color(d.value); })
+                    .style("stroke-width", function(d) { return d.value/10;});
+
+                // define the nodes
+                var node = svg.selectAll(".node")
+                    .data(force.nodes())
+                    .enter().append("g")
+                    .attr("class", "node")
+                    .on("dblclick",dblclick)
+                    .on("mouseover", tip.show)
+                    .on("mouseout", tip.hide)
+                    .call(d3.drag()
+                        .on("start", dragstarted)
+                        .on("drag", dragged)
+                        .on("end", dragended));
+
+                // add the nodes
+                node.append("circle")
+                    .attr("r", function(d) { return (node_degrees[d.name] + 5) * 1.2; })
+                    .attr("class", "circle")
+                    .style('fill', function(d) { return color_nodes(node_degrees[d.name]); });
+                node.append("text")
+                      .text(function(d) {
+
+                        if (features[d.name][0].length > 10) {
+                            var name=features[d.name][0].slice(0,10)+"...";} else{
+                            var name=features[d.name][0];
+                        }
+                        return name;
+                      })
+                      .style('stroke', function(d) { return color_nodes(node_degrees[d.name]); })
+                      .attr('x', 10)
+                      .attr('y', 3)
+                      .attr('class','text');
+
+                // add the curvy lines
+                function tick() {
+                    path.attr("d", function(d) {
+                        var dx = d.target.x - d.source.x,
+                            dy = d.target.y - d.source.y,
+                            dr = Math.sqrt(dx * dx + dy * dy);
+                        return "M" +
+                            d.source.x + "," +
+                            d.source.y + "A" +
+                            dr + "," + dr + " 0 0,1 " +
+                            d.target.x + "," +
+                            d.target.y;
+                    });
+
+                    node.attr("transform", function(d) {
+                        return "translate(" + d.x + "," + d.y + ")";
+                    });
+                };
+
+                function dragstarted(d) {
+                    if (!d3.event.active) force.alphaTarget(0.3).restart();
+                    d.fx = d.x;
+                    d.fy = d.y;
+                };
+
+                function dragged(d) {
+                    d.fx = d3.event.x;
+                    d.fy = d3.event.y;
+                };
+
+                function dragended(d) {
+                    if (!d3.event.active) force.alphaTarget(0);
+                    if (d.fixed == true) {
+                        d.fx = d.x;
+                        d.fy = d.y;
+                    }
+                    d3.select(this).select("circle").transition().style("fill", "red").attr("r", function(d) {
+                         return (node_degrees[d.name] + 5) * 1.8;
+                    });
+                };
+                function dblclick(d) {
+                    d3.select(this).select("circle").transition().attr("r", function(d) {
+                         return (node_degrees[d.name] + 5) * 1.2;
+                    }).style("fill", "white");
+                    d.fx = null;
+                    d.fy = null;
+                };
+                 </script>
+
+                </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

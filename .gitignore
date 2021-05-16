@@ -1,0 +1,6 @@
+.venv
+env.dev
+*pdf
+.env
+__pycache__/
+Team83/__pycache__ 
